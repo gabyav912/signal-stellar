@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><link rel="icon" type="image/png" href="logo_estrella.png">
+    <meta charset="UTF-8">
+    <title>Señal stellar - Configuración</title>
+    <style>
+        body {
+            background-color: #1E1E1E;
+            color: white;
+            font-family: sans-serif;
+            text-align: center;
+            margin: 0; padding: 20px;
+        }
+        nav a { color: #00ff00; text-decoration: none; margin: 0 10px; font-weight: bold; }
+        
+        .settings-panel {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #2b2b2b;
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid #444;
+            text-align: left;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+        }
+
+        select, input[type="number"] {
+            background: #111;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 8px;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .btn-save {
+            width: 100%;
+            padding: 12px;
+            background: #00ff00;
+            color: black;
+            border: none;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 0 10px #00ff00;
+            transition: 0.3s;
+        }
+
+        .btn-save:active { transform: scale(0.98); }
+
+        h1 { color: gold; text-align: center; }
+        h3 { margin: 0; font-size: 1.1rem; }
+        p { margin: 5px 0 0 0; font-size: 0.8rem; color: #888; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Panel de Ajustes</h1>
+        <nav>
+            <a href="index.html">Inicio</a> | <a href="dashboard.html">Panel</a> | <a href="timer.html">Timer</a>
+        </nav>
+    </header>
+
+    <main class="settings-panel">
+        <div class="setting-item">
+            <div>
+                <h3>Color de Interfaz</h3>
+                <p>Cambia el tono de los elementos neón.</p>
+            </div>
+            <select id="themeColor">
+                <option value="#00ff00">Verde Galaxia</option>
+                <option value="#00d4ff">Azul Estelar</option>
+                <option value="#bc13fe">Nebulosa Violeta</option>
+            </select>
+        </div>
+
+        <div class="setting-item">
+            <div>
+                <h3>Tiempo de Enfoque</h3>
+                <p>Minutos para el bloque de estudio.</p>
+            </div>
+            <input type="number" id="pomodoroTime" value="25" min="1" max="60">
+        </div>
+
+        <button class="btn-save" onclick="guardarConfiguracion()">
+            GUARDAR CONFIGURACIÓN
+        </button>
+    </main>
+
+    <script>
+        // Referencias a los elementos
+        const selectColor = document.getElementById('themeColor');
+        const inputTime = document.getElementById('pomodoroTime');
+
+        // 1. CARGAR: Al abrir, recuperar lo que guardó el usuario
+        document.addEventListener('DOMContentLoaded', () => {
+            const config = JSON.parse(localStorage.getItem('stellarConfig')) || {
+                color: '#00ff00',
+                tiempo: 25
+            };
+            
+            selectColor.value = config.color;
+            inputTime.value = config.tiempo;
+            
+            console.log("Configuración cargada del sistema.");
+        });
+
+        // 2. GUARDAR: Al hacer clic en el botón
+        function guardarConfiguracion() {
+            const nuevaConfig = {
+                color: selectColor.value,
+                tiempo: inputTime.value
+            };
+
+            localStorage.setItem('stellarConfig', JSON.stringify(nuevaConfig));
+            
+            alert('¡Datos guardados con éxito en la memoria del navegador!');
+        }
+    </script>
+
+    <footer>
+        <hr style="border: 0; border-top: 1px solid #444; margin-top: 20px;">
+        <p>Señal stellar &copy; 2026</p>
+    </footer>
+</body>
+</html>

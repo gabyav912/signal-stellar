@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Señal stellar - Dashboard</title>
+    <style>
+        body {
+            background-color: #1E1E1E;
+            color: white;
+            font-family: sans-serif;
+            text-align: center;
+            margin: 0; padding: 20px;
+        }
+        nav a { color: #00ff00; text-decoration: none; margin: 0 10px; font-weight: bold; }
+        
+        .grid-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        .card {
+            background: #2b2b2b;
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid #444;
+            transition: 0.3s;
+        }
+
+        .card:hover { border-color: #00ff00; transform: translateY(-5px); }
+
+        .icon-box {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .btn-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 15px;
+            background: #00ff00;
+            color: black;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        h1 { color: gold; }
+        .count { font-size: 2rem; color: #00ff00; display: block; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Panel de Control Estelar</h1>
+        <nav>
+            <a href="index.html">Inicio</a> | <a href="timer.html">Timer</a> | <a href="tareas.html">Misiones</a> | <a href="stats.html">Rendimiento</a>
+        </nav>
+    </header>
+
+    <main class="grid-dashboard">
+        <div class="card">
+            <div class="icon-box">📋</div>
+            <h3>Misiones Activas</h3>
+            <span class="count" id="taskCount">0</span>
+            <a href="tareas.html" class="btn-link">Ver Misiones</a>
+        </div>
+
+        <div class="card">
+            <div class="icon-box">⏱️</div>
+            <h3>Último Foco</h3>
+            <span class="count">25:00</span>
+            <a href="timer.html" class="btn-link">Ir al Timer</a>
+        </div>
+
+        <div class="card">
+            <div class="icon-box">🚀</div>
+            <h3>Rango Actual</h3>
+            <span class="count" style="color: gold;">Explorador</span>
+            <a href="stats.html" class="btn-link">Estadísticas</a>
+        </div>
+    </main>
+
+    <script>
+        // Este script lee cuántas tareas tienes guardadas en la memoria para mostrarlas aquí
+        document.addEventListener('DOMContentLoaded', () => {
+            const tareas = JSON.parse(localStorage.getItem('misionesStellar')) || [];
+            document.getElementById('taskCount').innerText = tareas.length;
+        });
+    </script>
+
+    <footer>
+        <hr style="border: 0; border-top: 1px solid #444;">
+        <p>Señal stellar &copy; 2026</p>
+    </footer>
+</body>
+</html>

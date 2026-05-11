@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Stellar Time - Tareas</title>
+    <style>
+        /* Estilo Espacial Basado en Figma */
+        body {
+            background-color: #1E1E1E;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        nav a { color: #00ff00; text-decoration: none; margin: 0 10px; font-weight: bold; }
+        
+        .container {
+            max-width: 500px;
+            margin: 40px auto;
+            background: #2b2b2b;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid #333;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+        }
+
+        h1 { color: gold; }
+        h2 { color: #ccc; font-size: 1.2rem; }
+
+        .input-group {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            width: 60%;
+            padding: 10px;
+            background: #111;
+            border: 1px solid #00ff00;
+            color: white;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .btn-add {
+            padding: 10px 15px;
+            background: #00ff00;
+            border: none;
+            color: black;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 0 10px #00ff00;
+        }
+
+        ul { list-style: none; padding: 0; margin-top: 25px; }
+
+        li {
+            background: #1e1e1e;
+            margin: 10px 0;
+            padding: 15px;
+            border-left: 4px solid gold; /* Detalle dorado de tus diseños */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 5px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-delete {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Mis Pendientes</h1>
+        <nav>
+            <a href="index.html">Inicio</a> | <a href="timer.html">Temporizador</a> | <a href="stats.html">Estadísticas</a> | <a href="nosotros.html">Nosotros</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h2>Panel de Misiones</h2>
+        
+        <div class="input-group">
+            <input type="text" id="taskInput" placeholder="Asignar nueva misión...">
+            <button class="btn-add" onclick="agregarTarea()">ASIGNAR</button>
+        </div>
+
+        <ul id="taskList">
+            </ul>
+    </main>
+
+    <footer>
+        <hr style="border: 0; border-top: 1px solid #444; margin-top: 50px;">
+        <p>Stellar Time &copy; 2026</p>
+    </footer>
+
+    <script>
+        const input = document.getElementById('taskInput');
+        const list = document.getElementById('taskList');
+
+        // 1. CARGAR: Busca misiones guardadas al abrir la página
+        document.addEventListener('DOMContentLoaded', () => {
+            const tareasGuardadas = JSON.parse(localStorage.getItem('misionesStellar')) || [];
+            tareasGuardadas.forEach(texto => crearElementoTarea(texto));
+        });
+
+        // 2. VISUAL: Crea el diseño de la tarea en la lista
+        function crearElementoTarea(texto) {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <span>${texto}</span>
+                <button class="btn-delete" onclick="eliminarTarea(this, '${texto.replace(/'/g, "\\'")}')">X</button>
+            `;
+            list.appendChild(li);
+        }
+
+        // 3. GUARDAR: Agrega la tarea a la lista y a la memoria
+        function agregarTarea() {
+            const valor = input.value.trim();
+            if (valor === '') return;
+
+            crearElementoTarea(valor);
+
+            const tareas = JSON.parse(localStorage.getItem('misionesStellar')) || [];
+            tareas.push(valor);
+            localStorage.setItem('misionesStellar', JSON.stringify(tareas));
+
+            input.value = '';
+        }
+
+        // 4. BORRAR: Quita la tarea de la pantalla y de la memoria
+        function eliminarTarea(boton, texto) {
+            boton.parentElement.remove();
+
+            let tareas = JSON.parse(localStorage.getItem('misionesStellar')) || [];
+            tareas = tareas.filter(t => t !== texto);
+            localStorage.setItem('misionesStellar', JSON.stringify(tareas));
+        }
+
+        // Atajo con tecla Enter
+        input.addEventListener("keypress", (e) => { 
+            if (e.key === "Enter") agregarTarea(); 
+        });
+    </script>
+</body>
+</html>

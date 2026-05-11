@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Señal stellar - Estadísticas</title>
+    <style>
+        body {
+            background-color: #1E1E1E;
+            color: white;
+            font-family: sans-serif;
+            text-align: center;
+        }
+        nav a { color: #00ff00; text-decoration: none; margin: 0 10px; }
+        
+        .stat-container {
+            background: #2b2b2b;
+            margin: 20px auto;
+            padding: 15px;
+            width: 80%;
+            border-radius: 10px;
+            border-left: 5px solid gold;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .bar-container {
+            background: #444;
+            width: 60%;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff00, #008800);
+            box-shadow: 0 0 10px #00ff00;
+        }
+
+        .planet-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid gold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Rendimiento Semanal</h1>
+        <nav>
+            <a href="index.html">Inicio</a> | <a href="curso.html">Curso</a> | <a href="blog.html">Blog</a> | <a href="faq.html">FAQ</a> | <a href="nosotros.html">Nosotros</a> | <a href="cv.html">CV</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Gráficos de productividad</h2>
+
+        <div class="stat-container">
+            <img src="https://images.unsplash.com/photo-1614732414444-096e5f1122d5?q=80&w=100" class="planet-icon" alt="Marte">
+            <div style="text-align: left; width: 20%;"><strong>Lunes</strong></div>
+            <div class="bar-container">
+                <div class="bar-fill" style="width: 80%;"></div>
+            </div>
+            <span>5h</span>
+        </div>
+
+        <div class="stat-container">
+            <img src="https://images.unsplash.com/photo-1522030239044-12f61fad1547?q=80&w=100" class="planet-icon" alt="Luna">
+            <div style="text-align: left; width: 20%;"><strong>Martes</strong></div>
+            <div class="bar-container">
+                <div class="bar-fill" style="width: 50%;"></div>
+            </div>
+            <span>3h</span>
+        </div>
+
+        <div class="stat-container">
+            <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=100" class="planet-icon" alt="Nebulosa">
+            <div style="text-align: left; width: 20%;"><strong>Miércoles</strong></div>
+            <div class="bar-container">
+                <div class="bar-fill" style="width: 95%;"></div>
+            </div>
+            <span>6h</span>
+        </div>
+    </main>
+
+    <footer>
+        <hr>
+        <p>Señal stellar &copy; 2026</p>
+    </footer>
+</body>
+</html>

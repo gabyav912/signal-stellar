@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Stellar Time - Temporizador</title>
+    <style>
+        body {
+            background-color: #1E1E1E;
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+            margin: 0; padding: 20px;
+        }
+        nav a { color: #00ff00; text-decoration: none; margin: 0 10px; font-weight: bold; }
+        
+        .timer-container {
+            max-width: 400px;
+            margin: 60px auto;
+            background: #2b2b2b;
+            padding: 40px;
+            border-radius: 50%; /* Diseño circular tipo radar */
+            border: 5px solid #00ff00; /* Color dinámico */
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.2);
+            position: relative;
+        }
+
+        #display {
+            font-size: 5rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: white;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .btn-start { background: #00ff00; color: black; }
+        .btn-reset { background: #ff4444; color: white; }
+
+        h1 { color: gold; }
+        .label { color: #888; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Modo Pomodoro</h1>
+        <nav>
+            <a href="index.html">Inicio</a> | <a href="dashboard.html">Panel</a> | <a href="ajustes.html">Ajustes</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="timer-container" id="radar">
+            <span class="label">SISTEMA DE ENFOQUE</span>
+            <div id="display">25:00</div>
+            
+            <div class="controls">
+                <button class="btn-start" onclick="toggleTimer()" id="mainBtn">Iniciar</button>
+                <button class="btn-reset" onclick="resetTimer()">Reset</button>
+            </div>
+        </div>
+        <p id="status">Esperando órdenes...</p>
+    </main>
+
+    <script>
+        let timeLeft;
+        let timerId = null;
+        let isRunning = false;
+
+        const display = document.getElementById('display');
+        const mainBtn = document.getElementById('mainBtn');
+        const radar = document.getElementById('radar');
+
+        // 1. CARGAR CONFIGURACIÓN DE AJUSTES
+        function cargarAjustes() {
+            const config = JSON.parse(localStorage.getItem('stellarConfig')) || {
+                color: '#00ff00',
+                tiempo: 25
+            };
+
+            // Aplicar color configurado
+            radar.style.borderColor = config.color;
+            mainBtn.style.backgroundColor = config.color;
+            radar.style.boxShadow = `0 0 30px ${config.color}33`; // Brillo sutil
+
+            // Aplicar tiempo configurado
+            timeLeft = config.tiempo * 60;
+            actualizarDisplay();
+        }
+
+        function actualizarDisplay() {
+            const min = Math.floor(timeLeft / 60);
+            const sec = timeLeft % 60;
+            display.innerText = `${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`;
+        }
+
+        function toggleTimer() {
+            if (isRunning) {
+                clearInterval(timerId);
+                mainBtn.innerText = "Reanudar";
+                document.getElementById('status').innerText = "Misión en pausa.";
+            } else {
+                document.getElementById('status').innerText = "Misión en curso...";
+                mainBtn.innerText = "Pausar";
+                timerId = setInterval(() => {
+                    timeLeft--;
+                    actualizarDisplay();
+                    if (timeLeft <= 0) {
+                        clearInterval(timerId);
+                        alert("¡Misión Cumplida! Bloque de enfoque terminado.");
+                    }
+                }, 1000);
+            }
+            isRunning = !isRunning;
+        }
+
+        function resetTimer() {
+            clearInterval(timerId);
+            isRunning = false;
+            mainBtn.innerText = "Iniciar";
+            cargarAjustes(); // Vuelve al tiempo de la configuración
+        }
+
+        // Iniciar al cargar
+        document.addEventListener('DOMContentLoaded', cargarAjustes);
+    </script>
+</body>
+</html>
